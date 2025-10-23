@@ -1,42 +1,68 @@
+import random
+
+
 def create_card(rank:str,suite:str) -> dict:
-    full_deck =[]
-    rank = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
-    suite = ['H','C','D','S']
-    for rank in range(len(rank)):
-        for suite in range(len()):
-            full_deck.append(rank)
-create_card('A','S')
-
-def compare_cards(p1_card:dict,p2_card:dict) -> str:
-    p1_card = create_card()
-    p2_card = create_card()
-
-    if p1_card == p2_card:
-        print('WAR')
-    elif p1_card > p2_card:
-        print('p1')
+    key_card = {}
+    key_card["rank"] = rank
+    key_card["suite"] = suite
+    if rank.isdigit():
+        key_card["value"] = int(rank)
     else:
-        print('p2')
-    return compare_cards
-compare_cards()
+        if rank == "J":
+            key_card["value"] = 11
+        elif rank == "Q":
+            key_card["value"] = 12
+        elif rank == "K":
+            key_card["value"] = 13
+        elif rank == "A":
+            key_card["value"] = 14
+
+    return key_card
+
+
+
+def  compare_cards(p1_card:dict, p2_card:dict) -> str:
+    value_p1 = p1_card["value"]
+    value_p2 = p2_card["value"]
+    if value_p1 > value_p2:
+        return "p1"
+    elif value_p2 > value_p1:
+        return "p2"
+    else:
+        return "WAR"
+
+
 
 def create_deck() -> list[dict]:
-    rank = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']
-    suite = ['H', 'C', 'D', 'S']
-    for rank in list(suite):
-        print(len(create_deck()))
-create_deck()
+    all_deck = []
+    deck = {}
+    all_markings = ["H","C","D","S"]
+    after_ten = ["J","Q","K","A"]
+    for i in range(2,15):
+        for j in range(4):
 
-def shuffle(deck:list[dict])-> list[dict]:
-    import random
+            if i <= 10:
+                deck["rank"] = str(i)
+                deck["suite"] = all_markings[j]
+                deck["value"] = i
+            else:
+                deck["rank"] = after_ten[i-12]
+                deck["suite"] = all_markings[j]
+                deck["value"] = i
+            all_deck.append(deck)
+            deck = {}
+    return all_deck
 
-    index_1 = create_deck()
-    index_2 = create_deck()
-    first_contestant = index_1
-    second_contestant = index_2
-    for a in range(1000):
-        shuffles = random.randint(1,52)
 
 
+
+def shuffle(deck:list[dict]) -> list[dict]:
+    for i in range(1000):
+        index1 = random.randint(0,51)
+        index2 = random.randint(0,51)
+        if index1 != index2:
+            deck[index1] , deck[index2] = deck[index2] ,deck[index1]
+
+    return deck
 
 
